@@ -1,0 +1,210 @@
+.employee-directory {
+  font-family: 'Geologica', sans-serif;
+  font-weight: bold;
+  width: 100%;
+  min-height: 100vh;
+  background-color: #f3f4f6;
+}
+
+.employee-directory__header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 1rem;
+  padding: 1rem;
+}
+
+.employee-directory__title {
+  text-align: left;
+  font-size: 2.0rem;
+  font-weight: 700;
+  margin: 1rem;
+  color: #0f172a;
+  font-family: "Geologica", sans-serif;
+}
+
+.employee-directory__grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(380px, 1fr));
+  gap: 1.25rem;
+  padding: 1.5rem;
+}
+
+.employee-directory__empty {
+  color: #6b7280;
+  padding: 2rem;
+}
+
+.search-bar {
+  display: flex;
+  gap: 0.5rem;
+  margin-left: 2rem;
+}
+
+.search-bar__input {
+  color: #777676;
+  padding: 8px 14px;
+  background-color: #fff;
+  border: 1px solid #d1d5db;
+  border-radius: 20px;
+  font-size: 0.9rem;
+  width: 260px;
+  max-width: 100%;
+  font-family: 'Geologica', sans-serif;
+  font-weight: normal;
+}
+
+.dept-search{
+  display: flex;
+  border-radius: 20px;
+  gap: 0.5rem;
+  margin-left: 2rem;
+  color: #777676;
+  padding: 8px 14px;
+  background-color: #fff;
+}
+.filter-section{
+  gap: 0.1rem;
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+}
+.employee-card {
+  background: #fff;
+  border-radius: 16px;
+  padding: 1.5rem 2rem;
+  position: relative;
+}
+
+.status-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  color: #fff;
+  padding: 4px 12px;
+  border-radius: 999px;
+  font-size: 0.75rem;
+  font-weight: 600;
+}
+.status-badge:hover {
+  opacity: 0.8;
+}
+
+.employee-card__menu {
+
+  border: none;
+  font-size: 1.1rem;
+  cursor: pointer;
+}
+
+.employee-card__menu-button{
+  background: #fff;
+  font-weight: bolder;
+  font-size: 1rem;
+  border-radius: 50%;
+  border: none;
+  color: #000000;
+  padding-bottom: 0.5rem;
+}
+.employee-card__menu-button:hover {
+  background: #f3f4f6;
+  color: #000000;
+}
+
+.employee-card__header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1rem;
+}
+
+.meta-information {
+  margin-bottom: 1rem;
+  display: flex;
+  flex-direction: row;
+  align-items: flex-start;
+}
+
+.meta-information__image {
+  width: 35%;
+  flex-shrink: 0;
+  border-radius: 50%;
+  object-fit: cover;
+  margin-right: 1rem;
+}
+
+.meta-information__details {
+  width: auto;
+  flex: 1;
+}
+
+.employee-card__id {
+  text-align: left;
+  font-size: 0.7rem;
+  color: #9ca3af;
+  margin: 0;
+}
+
+.employee-card__name {
+  text-align: left;
+  font-size: 1.1rem;
+  font-weight: bold;
+  color: #0f172a;
+}
+
+.employee-card__role {
+  text-align: left;
+  font-size: 0.85rem;
+  color: #6b7280;
+}
+
+.employee-card__department {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 4px 12px;
+  border-radius: 20px;
+  font-size: 0.85rem;
+  font-weight: 600;
+  margin: 0 0 10px;
+}
+
+.employee-card__department-icon {
+  width: 14px;
+  height: 14px;
+}
+
+.employee-card__divider {
+  border: none;
+  border-top: 2px solid #0f172a;
+  width: 100%;
+  margin: 1rem 0;
+}
+
+.employee-card__skills-wrapper {
+  text-align: left;
+  display: flex;
+  flex-direction: row;
+  gap: 1rem;
+}
+
+.employee-card__skills-label {
+  font-weight: 700;
+  font-size: 0.85rem;
+  color: #0f172a;
+}
+
+.employee-card__skills {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.skill-badge {
+  background: #001F3E;
+  color: #fff;
+  padding: 0px 10px;
+  border-radius: 999px;
+  font-size: 0.7rem;
+}
