@@ -65,7 +65,7 @@
   background-color: #fff;
 }
 .filter-section{
-  gap: 0.1rem;
+  gap: 1rem;
   width: 100%;
   display: flex;
   flex-direction: row;
@@ -207,4 +207,153 @@
   padding: 0px 10px;
   border-radius: 999px;
   font-size: 0.7rem;
+}
+
+.emp-form-popup {
+  background: #ffffff;
+  border-radius: 20px;
+  padding: 24px 28px;
+  width: 340px;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
+  font-family: sans-serif;
+}
+
+.form-names-title,
+.forms-names-title {
+  color: #8a8a8a;
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.5px;
+  margin: 12px 0 4px;
+}
+
+.new-emp-name,
+.new-emp-post {
+  width: 100%;
+  font-family: 'Geologica', sans-serif;
+  border: none;
+  background-color: white;
+  border-bottom: 1px solid #eee;
+  font-size: 15px;
+  padding: 4px 0;
+  outline: none;
+  color: #000000;
+  box-sizing: border-box;
+}
+
+.department-dropdwn {
+  font-family: 'Geologica', sans-serif;
+
+  margin-top: 8px;
+  padding: 6px 12px;
+  border-radius: 20px;
+  border: none;
+  background: #f0f1f1;
+  color: #252525;
+  font-weight: 600;
+  font-size: 13px;
+}
+
+.new-skills {
+  margin-top: 20px;
+  border-top: 2px solid #0b2540;
+  padding-top: 12px;
+}
+
+
+.add-newbtn{
+  color: #777676;
+  padding: 8px 14px;
+  background-color: #fff;
+  border: 1px solid #d1d5db;
+  border-radius: 20px;
+  font-size: 0.9rem;
+  width: 260px;
+  max-width: 100%;
+  font-family: 'Geologica', sans-serif;
+  font-weight: normal;
+}
+
+.add-newbtn:hover{
+  color: #ffffff;
+  background-color: #777676;
+
+}
+
+.popup-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: rgba(0, 0, 0, 0.4);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+}
+
+.emp-form-popup {
+  font-family: 'Geologica', sans-serif;
+
+  background: #ffffff;
+  border-radius: 20px;
+  padding: 24px 28px;
+  width: 340px;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
+  font-family: sans-serif;
+}
+
+
+.new-skills input {
+  border: none;
+  background-color: white;
+  border-bottom: 1px solid #eee;
+  font-size: 14px;
+  padding: 4px 0;
+  outline: none;
+  margin-right: 8px;
+}
+
+.add-new-skill {
+  border: none;
+  background: none;
+  color: #8a8a8a;
+  font-size: 13px;
+  cursor: pointer;
+}
+
+.add-new-skill:hover {
+  color: #0b2540;
+}
+
+.new-skills ul {
+  list-style: disc;
+  margin: 8px 0 0 18px;
+  padding: 0;
+}
+
+.new-skills li {
+  font-weight: 600;
+  color: #0b2540;
+  font-size: 14px;
+  margin-bottom: 4px;
+}
+
+.cardbtn{
+  color: #777676;
+  padding: 5px 5px;
+  background-color: #fff;
+  border: 1px solid #d1d5db;
+  border-radius: 20px;
+  font-size: 0.9rem;
+  width: 100px;
+  max-width: 100%;
+  font-family: 'Geologica', sans-serif;
+  font-weight: normal;
+}
+
+.cardbtn:hover{
+  color: #ffffff;
+  background-color: #777676;
 }

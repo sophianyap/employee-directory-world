@@ -17,13 +17,120 @@ interface Employee {
   skills: string[];
 }
 
+const getNextId = (employees: Employee[]): string => {
+  if (employees.length === 0) return "001";
+  const maxId = Math.max(...employees.map((emp) => Number(emp.id)));
+  return String(maxId + 1).padStart(3, "0");
+};
+
+const emptyForm = (employees: Employee[]): Employee => ({
+  id: getNextId(employees),
+  name: "",
+  role: "",
+  department: "Engineering",
+  isOnline: true,
+  skills: [],
+});
+
+
+
+interface EmployeeFormPopUpProps {
+  employees: Employee[];
+  onAddEmployee: (employee: Employee) => void;
+}
+
+export function EmployeeFormPopUp({ employees, onAddEmployee }: EmployeeFormPopUpProps) {
+  const [form, setForm] = useState<Employee>(emptyForm(employees));
+  const [isOpen, setIsOpen] = useState(false);
+  const [skillInput, setSkillInput] = useState("");
+
+  const openPopup = () => {
+    setForm(emptyForm(employees));
+    setIsOpen(true);
+  };
+
+  const closePopup = () => setIsOpen(false);
+
+  const addSkill = (newSkill: string) => {
+    if (newSkill.trim() === "") return;
+    setForm({ ...form, skills: [...form.skills, newSkill] });
+    setSkillInput("");
+  };
+
+  const handleSubmit = () => {
+    onAddEmployee(form);
+    setIsOpen(false);
+  };
+
+  return (
+    <div>
+      <button className="add-newbtn" onClick={openPopup}>+ Add Employee</button>
+
+      {isOpen && (
+        <div className="popup-overlay">
+          <div className="emp-form-popup">
+            <p>New ID: {form.id}</p>
+
+            <p className='form-names-title'>NAME</p>
+            <input
+              className='new-emp-name'
+              value={form.name}
+              onChange={(e) => setForm({ ...form, name: e.target.value })}
+            />
+
+            <p className='form-names-title'>POSITION</p>
+            <input
+              className='new-emp-post'
+              value={form.role}
+              onChange={(e) => setForm({ ...form, role: e.target.value })}
+            />
+            <p className='form-names-title'>DEPARTMENT</p>
+            <select
+              className="department-dropdwn"
+              value={form.department}
+              onChange={(e) =>
+                setForm({ ...form, department: e.target.value as Employee["department"] })
+              }
+            >
+              <option>Engineering</option>
+              <option>Design</option>
+              <option>Quality Assurance</option>
+              <option>Management</option>
+            </select>
+
+            <div className='new-skills'>
+              <p className='form-names-title'>SKILLS</p>
+              <input
+                value={skillInput}
+                onChange={(e) => setSkillInput(e.target.value)}
+                placeholder="Enter a skill"
+              />
+              <button className="add-new-skill" onClick={() => addSkill(skillInput)}>
+                Add
+              </button>
+              <ul>
+                {form.skills.map((skill, i) => (
+                  <li key={i}>{skill}</li>
+                ))}
+              </ul>
+            </div>
+
+            <button className="cardbtn" onClick={handleSubmit}>Save</button>
+            <button className="cardbtn" onClick={closePopup}>Cancel</button>
+          </div>
+        </div>
+      )}
+    </div>
+  );
+}
+
 export function App() {
-  const [employees] = useState<Employee[]>([
+  const [employees, setEmployees] = useState<Employee[]>([
     { id: '001', name: 'Alice Chen', role: 'Frontend Engineer', department: 'Engineering', isOnline: true, skills: ['React', 'TypeScript', 'CSS'] },
     { id: '002', name: 'Marcus Johnson', role: 'Product Designer', department: 'Design', isOnline: false, skills: ['Figma', 'Prototyping', 'UX Research'] },
     { id: '003', name: 'Sarah Lopez', role: 'QA Tester', department: 'Quality Assurance', isOnline: true, skills: ['Cypress', 'Jest', 'Manual'] },
     { id: '004', name: 'David Kim', role: 'Backend Engineer', department: 'Engineering', isOnline: false, skills: ['Node.js', 'Express', 'PostgreSQL'] },
-    { id: '005', name: 'Elena Rodriguez', role: 'Project Manager', department: 'Management', isOnline: true, skills: ['Agile', 'Jira', 'Scrum'] },
+    { id: "005", name: 'Elena Rodriguez', role: 'Project Manager', department: 'Management', isOnline: true, skills: ['Agile', 'Jira', 'Scrum'] },
   ]);
   const [searchQuery, setSearchQuery] = useState('');
   const filteredEmployees = employees.filter((employee) => {
@@ -35,13 +142,18 @@ export function App() {
     );
   });
 
+  const addEmployee = (employee: Employee) => {
+    setEmployees([...employees, employee]);
+  };
 
-  return (
+
+ return (
     <EmployeeDirectory
       employees={filteredEmployees}
       searchQuery={searchQuery}
       onSearchChange={setSearchQuery}
-
+      allEmployees={employees}
+      onAddEmployee={addEmployee}
     />
   );
 }
@@ -167,15 +279,16 @@ function SearchBar({ value, onChange }: SearchBarProps) {
   
 }
 
-
-
 interface EmployeeDirectoryProps {
   employees: Employee[];
   searchQuery: string;
   onSearchChange: (value: string) => void;
+  allEmployees: Employee[];
+  onAddEmployee: (employee: Employee) => void;
 }
 
-export function EmployeeDirectory({ employees, searchQuery, onSearchChange }: EmployeeDirectoryProps) {
+
+export function EmployeeDirectory({ employees, searchQuery, onSearchChange, allEmployees, onAddEmployee }: EmployeeDirectoryProps) {
   return (
     <>
       <link rel="preconnect" href="https://fonts.googleapis.com" />
@@ -190,8 +303,8 @@ export function EmployeeDirectory({ employees, searchQuery, onSearchChange }: Em
           <h1 className="employee-directory__title">Employee Directory</h1>
         </div>
         <div className='filter-section'>
-          <SearchBar value={searchQuery} onChange={onSearchChange} />      
-        </div>
+          <SearchBar value={searchQuery} onChange={onSearchChange} />
+          <EmployeeFormPopUp employees={allEmployees} onAddEmployee={onAddEmployee} />        </div>
         <div className="employee-directory__grid">
           {employees.length > 0 ? (
             employees.map((employee) => (
