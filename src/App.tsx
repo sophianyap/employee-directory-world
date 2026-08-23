@@ -1,5 +1,4 @@
 import { useState } from 'react';
-import './App.css';
 import accountIcon from './assets/account_circle.png';
 import offlineIcon from './assets/pause.png';
 import onlineIcon from './assets/online.png';
@@ -7,6 +6,15 @@ import engineeringIcon from './assets/engineering.png';
 import designIcon from './assets/design.png';
 import qaIcon from './assets/qa.png';
 import managementIcon from './assets/management.png';
+
+// NOTE: Add this to your global CSS (or index.html <link> tags) since Tailwind
+// utility classes can't load the Google Font itself:
+//
+// @import url('https://fonts.googleapis.com/css2?family=Geologica:wght,CRSV@100..900,0&display=swap');
+//
+// Also add to tailwind.config.js:
+//   theme: { extend: { fontFamily: { geologica: ['Geologica', 'sans-serif'] } } }
+// This file uses font-['Geologica'] arbitrary values so it works even without that config step.
 
 interface Employee {
   id: string;
@@ -31,8 +39,6 @@ const emptyForm = (employees: Employee[]): Employee => ({
   isOnline: true,
   skills: [],
 });
-
-
 
 interface EmployeeFormPopUpProps {
   employees: Employee[];
@@ -64,29 +70,35 @@ export function EmployeeFormPopUp({ employees, onAddEmployee }: EmployeeFormPopU
 
   return (
     <div>
-      <button className="add-newbtn" onClick={openPopup}>+ Add Employee</button>
+      <button
+        className="text-[#777676] px-3.5 py-2 bg-white border border-[#d1d5db] rounded-[20px] text-sm w-[260px] max-w-full font-['Geologica'] font-normal hover:text-white hover:bg-[#777676] transition-colors"
+        onClick={openPopup}
+      >
+        + Add Employee
+      </button>
 
       {isOpen && (
-        <div className="popup-overlay">
-          <div className="emp-form-popup">
+        <div className="fixed inset-0 w-screen h-screen bg-black/40 flex items-center justify-center z-[1000]">
+          <div className="bg-white rounded-[20px] px-7 py-6 w-[340px] shadow-[0_8px_24px_rgba(0,0,0,0.15)] font-sans">
             <p>New ID: {form.id}</p>
 
-            <p className='form-names-title'>NAME</p>
+            <p className="text-[#8a8a8a] text-xs font-semibold tracking-wide mt-3 mb-1">NAME</p>
             <input
-              className='new-emp-name'
+              className="w-full font-['Geologica'] border-none bg-white border-b border-[#eee] text-[15px] py-1 outline-none text-black box-border"
               value={form.name}
               onChange={(e) => setForm({ ...form, name: e.target.value })}
             />
 
-            <p className='form-names-title'>POSITION</p>
+            <p className="text-[#8a8a8a] text-xs font-semibold tracking-wide mt-3 mb-1">POSITION</p>
             <input
-              className='new-emp-post'
+              className="w-full font-['Geologica'] border-none bg-white border-b border-[#eee] text-[15px] py-1 outline-none text-black box-border"
               value={form.role}
               onChange={(e) => setForm({ ...form, role: e.target.value })}
             />
-            <p className='form-names-title'>DEPARTMENT</p>
+
+            <p className="text-[#8a8a8a] text-xs font-semibold tracking-wide mt-3 mb-1">DEPARTMENT</p>
             <select
-              className="department-dropdwn"
+              className="font-['Geologica'] mt-2 px-3 py-1.5 rounded-[20px] border-none bg-[#f0f1f1] text-[#252525] font-semibold text-[13px]"
               value={form.department}
               onChange={(e) =>
                 setForm({ ...form, department: e.target.value as Employee["department"] })
@@ -98,25 +110,41 @@ export function EmployeeFormPopUp({ employees, onAddEmployee }: EmployeeFormPopU
               <option>Management</option>
             </select>
 
-            <div className='new-skills'>
-              <p className='form-names-title'>SKILLS</p>
+            <div className="mt-5 border-t-2 border-[#0b2540] pt-3">
+              <p className="text-[#8a8a8a] text-xs font-semibold tracking-wide mt-3 mb-1">SKILLS</p>
               <input
+                className="border-none bg-white text-black border-b border-[#eee] text-sm py-1 outline-none mr-2"
                 value={skillInput}
                 onChange={(e) => setSkillInput(e.target.value)}
                 placeholder="Enter a skill"
               />
-              <button className="add-new-skill" onClick={() => addSkill(skillInput)}>
+              <button
+                className="border-none bg-transparent text-[#8a8a8a] text-[13px] cursor-pointer hover:text-[#0b2540]"
+                onClick={() => addSkill(skillInput)}
+              >
                 Add
               </button>
-              <ul>
+              <ul className="list-disc mt-2 ml-[18px] p-0">
                 {form.skills.map((skill, i) => (
-                  <li key={i}>{skill}</li>
+                  <li key={i} className="font-semibold text-[#0b2540] text-sm mb-1">
+                    {skill}
+                  </li>
                 ))}
               </ul>
             </div>
 
-            <button className="cardbtn" onClick={handleSubmit}>Save</button>
-            <button className="cardbtn" onClick={closePopup}>Cancel</button>
+            <button
+              className="text-[#777676] px-[5px] py-[5px] bg-white border border-[#d1d5db] rounded-[20px] text-sm w-[100px] max-w-full font-['Geologica'] font-normal hover:text-white hover:bg-[#777676] transition-colors mt-4 mr-2"
+              onClick={handleSubmit}
+            >
+              Save
+            </button>
+            <button
+              className="text-[#777676] px-[5px] py-[5px] bg-white border border-[#d1d5db] rounded-[20px] text-sm w-[100px] max-w-full font-['Geologica'] font-normal hover:text-white hover:bg-[#777676] transition-colors mt-4"
+              onClick={closePopup}
+            >
+              Cancel
+            </button>
           </div>
         </div>
       )}
@@ -134,7 +162,7 @@ export function App() {
   ]);
   const [searchQuery, setSearchQuery] = useState('');
   const filteredEmployees = employees.filter((employee) => {
-  const query = searchQuery.toLowerCase();
+    const query = searchQuery.toLowerCase();
     return (
       employee.name.toLowerCase().includes(query) ||
       employee.role.toLowerCase().includes(query) ||
@@ -146,8 +174,7 @@ export function App() {
     setEmployees([...employees, employee]);
   };
 
-
- return (
+  return (
     <EmployeeDirectory
       employees={filteredEmployees}
       searchQuery={searchQuery}
@@ -163,7 +190,11 @@ interface SkillBadgeProps {
 }
 
 function SkillBadge({ skill }: SkillBadgeProps) {
-  return <span className="skill-badge">{skill}</span>;
+  return (
+    <span className="bg-[#001F3E] text-white px-2.5 py-0 rounded-full text-[0.7rem]">
+      {skill}
+    </span>
+  );
 }
 
 interface EmployeeCardProps {
@@ -176,8 +207,11 @@ function StatusBadge({ isOnline }: { isOnline: boolean }) {
   const statusIcon = isOnline ? onlineIcon : offlineIcon;
 
   return (
-    <span className="status-badge" style={{ backgroundColor: statusColor }}>
-      <img src={statusIcon} alt={status} className="status-badge__icon" />
+    <span
+      className="inline-flex items-center gap-1.5 text-white px-3 py-1 rounded-full text-xs font-semibold hover:opacity-80 transition-opacity"
+      style={{ backgroundColor: statusColor }}
+    >
+      <img src={statusIcon} alt={status} className="w-3.5 h-3.5" />
       {status}
     </span>
   );
@@ -185,8 +219,10 @@ function StatusBadge({ isOnline }: { isOnline: boolean }) {
 
 function EmployeeCardMenu() {
   return (
-    <div className="employee-card__menu">
-      <button className="employee-card__menu-button">...</button>
+    <div className="text-lg cursor-pointer">
+      <button className="bg-white font-bold text-base rounded-full border-none text-black pb-2 hover:bg-[#f3f4f6] hover:text-black transition-colors">
+        ...
+      </button>
     </div>
   );
 }
@@ -200,14 +236,18 @@ const departmentColors: Record<string, { bg: string; color: string; icon: string
 
 function MetaInformation({ employee }: EmployeeCardProps) {
   return (
-    <div className="meta-information">
-      <img className="meta-information__image" src={accountIcon} alt={`${employee.name} avatar`} />
-      <div className="meta-information__details">
-        <p className="employee-card__id">EMP-{employee.id}</p>
-        <h2 className="employee-card__name">{employee.name}</h2>
-        <p className="employee-card__role">{employee.role}</p>
+    <div className="mb-4 flex flex-row items-start">
+      <img
+        className="w-[35%] shrink-0 rounded-full object-cover mr-4"
+        src={accountIcon}
+        alt={`${employee.name} avatar`}
+      />
+      <div className="w-auto flex-1">
+        <p className="text-left text-[0.7rem] text-[#9ca3af] m-0">EMP-{employee.id}</p>
+        <h2 className="text-left text-[1.1rem] font-bold text-[#0f172a]">{employee.name}</h2>
+        <p className="text-left text-[0.85rem] text-[#6b7280]">{employee.role}</p>
         <div
-          className="employee-card__department"
+          className="inline-flex items-center gap-1.5 px-3 py-1 rounded-[20px] text-[0.85rem] font-semibold mb-[10px]"
           style={{
             backgroundColor: departmentColors[employee.department]?.bg,
             color: departmentColors[employee.department]?.color,
@@ -216,20 +256,20 @@ function MetaInformation({ employee }: EmployeeCardProps) {
           <img
             src={departmentColors[employee.department]?.icon}
             alt={`${employee.department} icon`}
-            className="employee-card__department-icon"
+            className="w-3.5 h-3.5"
           />
           <span>{employee.department}</span>
         </div>
-              </div>
-            </div>
+      </div>
+    </div>
   );
 }
 
 function SkillsList({ skills }: { skills: string[] }) {
   return (
-    <div className="employee-card__skills-wrapper">
-      <p className="employee-card__skills-label">Skills</p>
-      <div className="employee-card__skills">
+    <div className="text-left flex flex-row gap-4">
+      <p className="font-bold text-[0.85rem] text-[#0f172a]">Skills</p>
+      <div className="flex flex-wrap gap-1.5">
         {skills.map((skill) => (
           <SkillBadge key={skill} skill={skill} />
         ))}
@@ -240,7 +280,7 @@ function SkillsList({ skills }: { skills: string[] }) {
 
 export function EmployeeCardHeader({ employee }: EmployeeCardProps) {
   return (
-    <div className="employee-card__header">
+    <div className="flex justify-between items-center mb-4">
       <StatusBadge isOnline={employee.isOnline} />
       <EmployeeCardMenu />
     </div>
@@ -249,10 +289,10 @@ export function EmployeeCardHeader({ employee }: EmployeeCardProps) {
 
 export function EmployeeCard({ employee }: EmployeeCardProps) {
   return (
-    <div className="employee-card">
+    <div className="bg-white rounded-2xl px-8 py-6 relative font-['Geologica'] font-bold">
       <EmployeeCardHeader employee={employee} />
       <MetaInformation employee={employee} />
-      <hr className="employee-card__divider" />
+      <hr className="border-none border-t-2 border-[#0f172a] w-full my-4" />
       <SkillsList skills={employee.skills} />
     </div>
   );
@@ -265,18 +305,16 @@ interface SearchBarProps {
 
 function SearchBar({ value, onChange }: SearchBarProps) {
   return (
-    <div className="search-bar">
+    <div className="flex gap-2 ml-8">
       <input
         type="text"
-        className="search-bar__input"
+        className="text-[#777676] px-3.5 py-2 bg-white border border-[#d1d5db] rounded-[20px] text-sm w-[260px] max-w-full font-['Geologica'] font-normal"
         placeholder="Search by name, role, or dept..."
         value={value}
         onChange={(e) => onChange(e.target.value)}
       />
-      
     </div>
   );
-  
 }
 
 interface EmployeeDirectoryProps {
@@ -286,7 +324,6 @@ interface EmployeeDirectoryProps {
   allEmployees: Employee[];
   onAddEmployee: (employee: Employee) => void;
 }
-
 
 export function EmployeeDirectory({ employees, searchQuery, onSearchChange, allEmployees, onAddEmployee }: EmployeeDirectoryProps) {
   return (
@@ -298,20 +335,23 @@ export function EmployeeDirectory({ employees, searchQuery, onSearchChange, allE
         rel="stylesheet"
       />
 
-      <div className="employee-directory">
-        <div className="employee-directory__header">
-          <h1 className="employee-directory__title">Employee Directory</h1>
+      <div className="font-['Geologica'] font-bold w-full min-h-screen bg-[#f3f4f6]">
+        <div className="flex justify-between items-center flex-wrap gap-4 p-4">
+          <h1 className="text-left text-[2rem] font-bold m-4 text-[#0f172a] font-['Geologica']">
+            Employee Directory
+          </h1>
         </div>
-        <div className='filter-section'>
+        <div className="gap-4 w-full flex flex-row">
           <SearchBar value={searchQuery} onChange={onSearchChange} />
-          <EmployeeFormPopUp employees={allEmployees} onAddEmployee={onAddEmployee} />        </div>
-        <div className="employee-directory__grid">
+          <EmployeeFormPopUp employees={allEmployees} onAddEmployee={onAddEmployee} />
+        </div>
+        <div className="grid grid-cols-[repeat(auto-fill,minmax(380px,1fr))] gap-5 p-6">
           {employees.length > 0 ? (
             employees.map((employee) => (
               <EmployeeCard key={employee.id} employee={employee} />
             ))
           ) : (
-            <p className="employee-directory__empty">No employees match your search.</p>
+            <p className="text-[#6b7280] p-8">No employees match your search.</p>
           )}
         </div>
       </div>
