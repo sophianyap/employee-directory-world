@@ -1,3 +1,6 @@
+@import "tailwindcss";
+
+
 .employee-directory {
   font-family: 'Geologica', sans-serif;
   font-weight: bold;
