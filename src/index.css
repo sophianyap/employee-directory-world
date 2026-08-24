@@ -264,13 +264,13 @@ code {
   text-align: left;
   font-size: 1.1rem;
   font-weight: bold;
-  color: #0f172a;
+
 }
 
 .employee-card__role {
   text-align: left;
   font-size: 0.85rem;
-  color: #6b7280;
+
 }
 
 .employee-card__department {

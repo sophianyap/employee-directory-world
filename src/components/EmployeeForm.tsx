@@ -1,15 +1,15 @@
 import { useState } from 'react';
 import accountIcon from '../assets/account_circle.png';
 import type { Employee } from '../types';
-import { departmentColors } from '../constants';
-import { emptyForm } from '../utils';
+import { departmentColors, emptyForm } from '../types';
 
-interface EmployeeFormPopUpProps {
+export function EmployeeForm({
+  employees,
+  onAddEmployee,
+}: {
   employees: Employee[];
   onAddEmployee: (employee: Employee) => void;
-}
-
-export function EmployeeFormPopUp({ employees, onAddEmployee }: EmployeeFormPopUpProps) {
+}) {
   const [form, setForm] = useState<Employee>(emptyForm(employees));
   const [isOpen, setIsOpen] = useState(false);
   const [skillInput, setSkillInput] = useState("");
@@ -44,7 +44,6 @@ export function EmployeeFormPopUp({ employees, onAddEmployee }: EmployeeFormPopU
       {isOpen && (
         <div className="fixed inset-0 w-screen h-screen bg-black/40 flex items-center justify-center z-[1000]">
           <div className="bg-white rounded-[20px] px-7 py-6 w-[360px] shadow-[0_8px_24px_rgba(0,0,0,0.15)] font-['Geologica']">
-            {/* Header */}
             <div className="flex justify-between items-center mb-4">
               <h3 className="text-[1.05rem] font-bold text-[#0f172a] m-0">Add New Employee</h3>
               <button className="bg-transparent border-none text-[#8a8a8a] font-bold text-lg cursor-pointer hover:text-[#0b2540]">
@@ -52,7 +51,6 @@ export function EmployeeFormPopUp({ employees, onAddEmployee }: EmployeeFormPopU
               </button>
             </div>
 
-            {/* Avatar + fields */}
             <div className="flex items-start gap-4">
               <img
                 src={accountIcon}
@@ -105,7 +103,6 @@ export function EmployeeFormPopUp({ employees, onAddEmployee }: EmployeeFormPopU
               </div>
             </div>
 
-            {/* Skills */}
             <div className="mt-5 border-t border-[#0b2540] pt-3">
               <p className="text-[#8a8a8a] text-xs font-semibold tracking-wide mb-2">SKILLS</p>
 
@@ -137,7 +134,6 @@ export function EmployeeFormPopUp({ employees, onAddEmployee }: EmployeeFormPopU
               </div>
             </div>
 
-            {/* Actions */}
             <div className="flex gap-2 mt-5">
               <button
                 className="flex-1 text-white px-4 py-2 bg-[#0b2540] border-none rounded-[20px] text-sm font-['Geologica'] font-semibold hover:bg-[#0f2f52] transition-colors"
