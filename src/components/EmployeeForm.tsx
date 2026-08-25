@@ -15,8 +15,7 @@ export function EmployeeForm({
 }) {
   const [isOpen, setIsOpen] = useState(false);
   const [skillInput, setSkillInput] = useState('');
-  // Holds the fields that aren't part of the form (id, isOnline) so we can
-  // merge them back in on submit.
+ 
   const [baseEmployee, setBaseEmployee] = useState<Employee>(() => emptyForm(employees));
 
   const {

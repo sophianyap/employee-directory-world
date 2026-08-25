@@ -24,8 +24,8 @@ export function EmployeeDirectory({
         </h1>
       </div>
 
-      <div className="gap-4 w-full flex flex-row items-center">
-        <div className="flex gap-2 ml-8">
+      <div className="gap-4 w-full flex flex-row flex-wrap items-center px-4 sm:px-0">
+        <div className="flex gap-2 sm:ml-8">
           <div className="relative w-[260px] max-w-full">
             <Search className="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-[#9ca3af]" />
             <input
@@ -40,7 +40,7 @@ export function EmployeeDirectory({
         <EmployeeForm employees={allEmployees} onAddEmployee={onAddEmployee} />
       </div>
 
-      <div className="grid grid-cols-[repeat(auto-fill,minmax(380px,1fr))] gap-5 p-6">
+      <div className="grid grid-cols-[repeat(auto-fill,minmax(min(380px,100%),1fr))] gap-5 p-3 sm:p-6">
         {employees.length > 0 ? (
           employees.map((employee) => (
             <EmployeeCard key={employee.id} employee={employee} />

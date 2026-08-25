@@ -59,10 +59,18 @@
 
   flex-direction: column;
   box-sizing: border-box;
+
+  @media (max-width: 768px) {
+    padding-right: 0;
+  }
 }
 
 body {
   margin-right: 2rem;
+
+  @media (max-width: 768px) {
+    margin-right: 0;
+  }
 }
 
 /*

@@ -11,12 +11,12 @@ export const employeeFormSchema = z.object({
   name: z
     .string()
     .trim()
-    .min(1, 'Full name is required')
+    .min(2, 'Full name is required')
     .max(80, 'Full name must be 80 characters or fewer'),
   role: z
     .string()
     .trim()
-    .min(1, 'Position is required')
+    .min(2, 'Position is required')
     .max(80, 'Position must be 80 characters or fewer'),
   department: z.enum(departmentOptions, {
     message: 'Select a department',
