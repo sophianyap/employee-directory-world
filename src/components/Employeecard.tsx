@@ -38,7 +38,7 @@ function MetaInformation({ employee }: { employee: Employee }) {
       />
       <div className="w-auto flex-1">
         <p className="text-left text-[0.7rem] text-[#9ca3af] m-0">EMP-{employee.id}</p>
-        <h2 className="text-left text-[1.1rem] text-[#9ca3af] sfont-bold m-0">{employee.name}</h2>
+        <h2 className="text-left text-[1.1rem] text-[#0f172a] font-bold m-0">{employee.name}</h2>
         <p className="text-left text-[0.85rem] text-[#6b7280] mb-2 font-normal">{employee.role}</p>
         <div
           className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-[0.8rem] font-semibold"

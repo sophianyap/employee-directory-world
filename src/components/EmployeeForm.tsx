@@ -1,7 +1,10 @@
 import { useState } from 'react';
+import { useForm } from 'react-hook-form';
+import { zodResolver } from '@hookform/resolvers/zod';
 import accountIcon from '../assets/account_circle.png';
 import type { Employee } from '../types';
 import { departmentColors, emptyForm } from '../types';
+import { employeeFormSchema, departmentOptions, type EmployeeFormValues } from '../schemas/employeeFormSchema';
 
 export function EmployeeForm({
   employees,
@@ -10,25 +13,46 @@ export function EmployeeForm({
   employees: Employee[];
   onAddEmployee: (employee: Employee) => void;
 }) {
-  const [form, setForm] = useState<Employee>(emptyForm(employees));
   const [isOpen, setIsOpen] = useState(false);
-  const [skillInput, setSkillInput] = useState("");
+  const [skillInput, setSkillInput] = useState('');
+  // Holds the fields that aren't part of the form (id, isOnline) so we can
+  // merge them back in on submit.
+  const [baseEmployee, setBaseEmployee] = useState<Employee>(() => emptyForm(employees));
+
+  const {
+    register,
+    handleSubmit,
+    watch,
+    setValue,
+    reset,
+    formState: { errors },
+  } = useForm<EmployeeFormValues>({
+    resolver: zodResolver(employeeFormSchema),
+    defaultValues: toFormValues(baseEmployee),
+  });
+
+  const skills = watch('skills');
+  const department = watch('department');
 
   const openPopup = () => {
-    setForm(emptyForm(employees));
+    const next = emptyForm(employees);
+    setBaseEmployee(next);
+    reset(toFormValues(next));
+    setSkillInput('');
     setIsOpen(true);
   };
 
   const closePopup = () => setIsOpen(false);
 
   const addSkill = (newSkill: string) => {
-    if (newSkill.trim() === "") return;
-    setForm({ ...form, skills: [...form.skills, newSkill] });
-    setSkillInput("");
+    const trimmed = newSkill.trim();
+    if (trimmed === '') return;
+    setValue('skills', [...skills, trimmed], { shouldValidate: true });
+    setSkillInput('');
   };
 
-  const handleSubmit = () => {
-    onAddEmployee(form);
+  const onSubmit = (data: EmployeeFormValues) => {
+    onAddEmployee({ ...baseEmployee, ...data });
     setIsOpen(false);
   };
 
@@ -43,10 +67,18 @@ export function EmployeeForm({
 
       {isOpen && (
         <div className="fixed inset-0 w-screen h-screen bg-black/40 flex items-center justify-center z-[1000]">
-          <div className="bg-white rounded-[20px] px-7 py-6 w-[360px] shadow-[0_8px_24px_rgba(0,0,0,0.15)] font-['Geologica']">
+          <form
+            className="bg-white rounded-[20px] px-7 py-6 w-[360px] shadow-[0_8px_24px_rgba(0,0,0,0.15)] font-['Geologica']"
+            onSubmit={handleSubmit(onSubmit)}
+            noValidate
+          >
             <div className="flex justify-between items-center mb-4">
               <h3 className="text-[1.05rem] font-bold text-[#0f172a] m-0">Add New Employee</h3>
-              <button className="bg-transparent border-none text-[#8a8a8a] font-bold text-lg cursor-pointer hover:text-[#0b2540]">
+              <button
+                type="button"
+                className="bg-transparent border-none text-[#8a8a8a] font-bold text-lg cursor-pointer hover:text-[#0b2540]"
+                onClick={closePopup}
+              >
                 ...
               </button>
             </div>
@@ -65,9 +97,11 @@ export function EmployeeForm({
                     </p>
                     <input
                       className="w-full font-['Geologica'] border-none bg-transparent border-b border-[#eee] text-[15px] font-bold py-1 outline-none text-black box-border"
-                      value={form.name}
-                      onChange={(e) => setForm({ ...form, name: e.target.value })}
+                      {...register('name')}
                     />
+                    {errors.name && (
+                      <p className="text-red-500 text-[0.65rem] mt-0.5">{errors.name.message}</p>
+                    )}
                   </div>
                 </div>
 
@@ -78,28 +112,33 @@ export function EmployeeForm({
                     </p>
                     <input
                       className="w-full font-['Geologica'] border-none bg-transparent border-b border-[#eee] text-[13px] font-normal py-1 outline-none text-black box-border"
-                      value={form.role}
-                      onChange={(e) => setForm({ ...form, role: e.target.value })}
+                      {...register('role')}
                     />
+                    {errors.role && (
+                      <p className="text-red-500 text-[0.65rem] mt-0.5">{errors.role.message}</p>
+                    )}
                   </div>
 
                   <select
                     className="shrink-0 font-['Geologica'] px-2.5 py-1 rounded-full border-none text-[11px] font-semibold outline-none"
                     style={{
-                      backgroundColor: departmentColors[form.department]?.bg,
-                      color: departmentColors[form.department]?.color,
+                      backgroundColor: departmentColors[department]?.bg,
+                      color: departmentColors[department]?.color,
                     }}
-                    value={form.department}
-                    onChange={(e) =>
-                      setForm({ ...form, department: e.target.value as Employee["department"] })
-                    }
+                    {...register('department')}
                   >
-                    <option>Engineering</option>
-                    <option>Design</option>
-                    <option>Quality Assurance</option>
-                    <option>Management</option>
+                    {departmentOptions.map((option) => (
+                      <option key={option} value={option}>
+                        {option}
+                      </option>
+                    ))}
                   </select>
                 </div>
+                {errors.department && (
+                  <p className="text-red-500 text-[0.65rem] mt-0.5 text-right">
+                    {errors.department.message}
+                  </p>
+                )}
               </div>
             </div>
 
@@ -107,9 +146,9 @@ export function EmployeeForm({
               <p className="text-[#8a8a8a] text-xs font-semibold tracking-wide mb-2">SKILLS</p>
 
               <ul className="p-0 m-0 mb-2">
-                {form.skills.map((skill, i) => (
+                {skills.map((skill, i) => (
                   <li
-                    key={i}
+                    key={`${skill}-${i}`}
                     className="list-none font-bold text-[#0b2540] text-sm border-b border-[#eee] py-1"
                   >
                     {skill}
@@ -122,35 +161,54 @@ export function EmployeeForm({
                   className="flex-1 border-none bg-transparent text-[#8a8a8a] text-sm py-1 outline-none placeholder:text-[#8a8a8a]"
                   value={skillInput}
                   onChange={(e) => setSkillInput(e.target.value)}
-                  onKeyDown={(e) => e.key === "Enter" && addSkill(skillInput)}
+                  onKeyDown={(e) => {
+                    if (e.key === 'Enter') {
+                      e.preventDefault();
+                      addSkill(skillInput);
+                    }
+                  }}
                   placeholder="+ add new skill"
                 />
                 <button
+                  type="button"
                   className="border-none bg-transparent text-[#8a8a8a] text-[13px] cursor-pointer hover:text-[#0b2540]"
                   onClick={() => addSkill(skillInput)}
                 >
                   Add
                 </button>
               </div>
+              {errors.skills && (
+                <p className="text-red-500 text-[0.65rem] mt-0.5">{errors.skills.message}</p>
+              )}
             </div>
 
             <div className="flex gap-2 mt-5">
               <button
+                type="submit"
                 className="flex-1 text-white px-4 py-2 bg-[#0b2540] border-none rounded-[20px] text-sm font-['Geologica'] font-semibold hover:bg-[#0f2f52] transition-colors"
-                onClick={handleSubmit}
               >
                 Save
               </button>
               <button
+                type="button"
                 className="flex-1 text-[#777676] px-4 py-2 bg-white border border-[#d1d5db] rounded-[20px] text-sm font-['Geologica'] font-normal hover:bg-[#f3f4f6] transition-colors"
                 onClick={closePopup}
               >
                 Cancel
               </button>
             </div>
-          </div>
+          </form>
         </div>
       )}
     </div>
   );
+}
+
+function toFormValues(employee: Employee): EmployeeFormValues {
+  return {
+    name: employee.name,
+    role: employee.role,
+    department: employee.department,
+    skills: employee.skills,
+  };
 }
